@@ -1,34 +1,328 @@
 \section{Light Attenuation}
-Fits are done based on 2-strip pixels corresponding to strip number. 
-The strip number is converted into distance by a process using equations \ref{eq:udist}-\ref{eq:wdist}, 
-equation \ref{eq:s}, and an offset to have the distance quoted to the center of the physical bin. 
-The exccess fiber lengths in theory could be added into the distance, but will only cause a shift in the fit.
-The fiber lengths are taken from the PCAL geometry note \cite{bib:geomnote}. 
-% and are listed in section \ref{sec:fiberlength}.
-The Gaussian centroids can be found as a function of total distance from the edge of the PCAL unit.
-This total distance is fit to an exponential form. 
 
-
-
-
-\subsection{Strip Number vs Distance}
-\FloatBarrier
-
-The overlaid strip numbers convert directly into distance as seen by Figure \ref{fig:lowqualdist}
+Light attenuation was determined by measuring the MIP energy as a function of distance from the readout edge of each U,V,W view.  Fig.~\ref{fig:attendef} shows a schematic of how crossing strips are used to define the hit distance. The overlap of the measured strip and the crossing strip creates a trapezoidal bin formed by the overlap of two different strip orientations. The width of this physical bin is given by
+\begin{equation}
+    s = \frac{w}{\sin{\alpha}} = \frac{w}{\cos{\beta}}
+    \label{eq:s}
+\end{equation}
+where $w$ is a single scintillator strip width ($\approx 4.5$cm). The strip number is converted into distance using equations \ref{eq:udist}-\ref{eq:wdist},\ref{eq:s}, plus an offset such that the distance is referenced to the center of the physical bin. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[height= 3in, keepaspectratio = true]{lowqualitydiagram}
-\caption{A cartoon schematic of the pcal unit demonstrates the method to correct for the light attenuation.}
-\label{fig:lowqualdist}
+\includegraphics[height= 2in, keepaspectratio = true]{attendef}
+\caption{LEFT: Schematic demonstrates the use of crossing strips to measure distance from edge of PCAL triangle. RIGHT: Outline of a generic intersection of a u and w strip. The distance between the trapezoidal
+ area and the PCAL edge can be represented by a linear function of $s$.}
+\label{fig:attendef}
+\end{figure}
+
+Fig.~\ref{fig:adcvdist} shows a 2-D histogram of the measured MIP energy versus the PMT number of the crossing strip.  The data clearly show the decrease in the MIP peak with distance. The next sections describe how the MIP energy for each distance slice is determined, and the fitting function used to describe the attenuation.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width= 2.5in, keepaspectratio = true]{adcvdist}
+\caption{Cosmic data showing ADC plotted vs crossing strip number.  In this case PMT 62 is closest to the readout end.}
+\label{fig:adcvdist}
+\end{figure}
+
+\subsection{Fitting to MIP Peaks}
+\label{Sec:fitToADCOutput}
+
+Following event selection to isolate single pixel hits, the resulting energy loss distributions show two features:
+
+\begin{enumerate}
+\item MIP peak with a mean which is position dependent, corresponding to tracks which pass through all five scintillator layers in the measured pixel.
+\item Background which diminishes with increasing pulse height and peaks near the ADC threshold.
+\end{enumerate}
+
+Fig.~\ref{fig:distribution} shows an ADC readout histogram for PMT U67, which reads out strips near the bottom edge of the PCAL.  The low energy background likely arises from tracks which partially intercept adjacent pixels but fail to exceed the threshold in those pixels.  As a result the Dalitz cut fails to exclude these tracks and incomplete collection of light occurs in the measured pixel.  The background contamination is maximum for edge strips, since there is no adjacent strip to veto 'corner clipping' muon trajectories.  The next section outlines the fitting strategy used to minimize background contributions.
+	
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 4in, keepaspectratio = true]{distribution}
+    \caption{Example of ADC readout histogram from one U/W trapezoidal bin (U=67 W=50).  The red line is an exponential+gaussian fit.}
+    \label{fig:distribution}
+\end{figure}
+
+\subsection{Fitting Strategy}
+
+The Dalitz pixel cut works best when ADC threshold cuts can be placed close to the onset of the MIP peak in all three PMTs which view a given readout pixel.  This depends on all PMTs being well gain-matched and requires a knowledge of the light attenuation correction.  Since this is only approximately the case at the start of calibration, an iterative approach was used to progressively improve the MIP fit accuracy. 
+
+For each iterative step, cuts to isolate the MIP peak energy are optimized using two cuts:
+\begin{enumerate}
+    \item Cuts on U,V,W MIP energy: A $3\sigma$ cut is placed on each MIP peak for PMTs contributing to the readout pixel based on gaussian fits.  The overall effect is to reduce the exponential background in the readout pixel. This improves the fits to some of the edges.
+    \item Cuts on U+V+W MIP energy sum: The desired muon trajectory should deposit the same amount of energy into each U,V,W layer. After the initial $3\sigma$ cuts and fitting attenuation curves, individual gains can be estimated. Using the emperically found gains, a cut on the U,V,W sum of ADC signals is used to eliminate events whose partial U,V,W energies could not contribute to the sum.\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 6in, keepaspectratio = true]{allstrip67}
+    \caption{Example of all W crossing strip slices of the ADC readout from PMT U67.}
+    \label{fig:allstrip67}
+\end{figure}
+
+\FloatBarrier
+\subsection{Iteration Process}
+For each iteration pass a $3\sigma$ cut on ADC distributions are made around the MIP peaks, determined by either the MIP signal fits or by attenuation fits.  This allows for a converging result because each cut on one U,V,W layer affects the other two. Therefore the MIP signal fits keeps improving as the attenuation fit and gains improve. 
+
+To illustrate how the process works, the following section shows each pass of a typical iteration.  For each pass the cuts are described, followed by MIP fit plots for six representative U PMTs and a fixed crossing strip (W60).  Finally attenuation fits for each PMT are shown, which show how the multiple cuts affect each attenuation fit as a function of strip number. 
+
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 0}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall into 
+    this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit or near neighbor hit: Using generated events on a calculated skeleton of 
+    the pcal, each pixel was determined to be valid or not. Extra uncertainty was allowed by 
+    also marking nearest neighboring pixels.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass0}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips 
+    (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass0}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass0}
+    \caption{Shown is the overall attenuation fits to the selected u-strips 
+    (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass0}
 \end{figure}
 
 
-%\FloatBarrier
-%\subsection{Fiber Length}
-%\label{sec:fiberlength}
-%Fiber lengths for each individual strip can be found in the PCAL geometry note \cite{bib:geomnote}.
-%These table have been recorded and added into the calibration. 
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 1}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall 
+    into this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit or near neighbor hit: Using generated events on a calculated skeleton
+     of the pcal, each pixel was determined to be valid or not. Extra uncertainty was 
+     allowed by also marking nearest neighboring pixels.
+    \item 3$\sigma$ Cut on Signal: Each signal was fit to a Gaussian and exponential in 
+    pass 0. The parameter $\sigma$ from the Gaussian fit was used to cut out the events
+     that did not lie within this function.
+\end{itemize}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass1}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips
+     (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass1}
+    \caption{Shown is the overall attenuation fits to the selected u-strips 
+    (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass1}
+\end{figure}
+
+
+
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 2}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall 
+    into this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit or near neighbor hit: Using generated events on a calculated skeleton 
+    of the pcal, each pixel was determined to be valid or not. Extra uncertainty was allowed 
+    by also marking nearest neighboring pixels.
+    \item Cut on Attenuation Fits: When the signals where the Gaussian centroid from pass 1 
+    were outside an ADC value of $\pm50$ from the attenuation fit, the obtained $\sigma$ was 
+    ignored and a new cut about the attenuation fit was employed. If the centroid was close 
+    to ADC value from the attenuation fit a 2$\sigma$ cut was used to remove extra background.
+\end{itemize}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass2}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips 
+    (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass2}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass2}
+    \caption{Shown is the overall attenuation fits to the selected u-strips 
+    (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass2}
+\end{figure}
+
+
+
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 3}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall 
+    into this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit: Using generated events on a calculated skeleton of the pcal, each 
+    pixel was determined to be valid or not.
+    \item 3$\sigma$ Cut on Signal: Each signal was fit to a Gaussian in pass 2. The parameter 
+    $\sigma$ from the Gaussian fit was used to cut out the events that did not lie within this function.
+    \item Attenuation Corrected Intensity Cut: The ADC value measured was corrected with the 
+    attenuation curves obtained from pass 2. The corrected value was summed over each layer. 
+    A cut on this intensity was placed generously from 1300 to 2700
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass3}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips 
+    (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass3}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass3}
+    \caption{Shown is the overall attenuation fits to the selected u-strips 
+    (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass3}
+\end{figure}
+
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 4}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall 
+    into this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit: Using generated events on a calculated skeleton of the pcal, each 
+    pixel was determined to be valid or not.
+    \item 3$\sigma$ Cut on Signal: Each signal was fit to a Gaussian in pass 2. The parameter 
+    $\sigma$ from the Gaussian fit was used to cut out the events that did not lie within this function.
+    \item Attenuation Corrected Intensity Cut: The ADC value measured was corrected with 
+    the attenuation curves obtained from pass 2. The corrected value was summed over each 
+    layer. A cut on this intensity was placed generously from 1300 to 2700
+\end{itemize}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass4}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass4}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass4}
+    \caption{Shown is the overall attenuation fits to the selected u-strips (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass4}
+\end{figure}
+
+
+\clearpage
+\FloatBarrier
+\subsubsection{Pass 5}
+\begin{itemize}
+    \item Multiplicity Cut: Only events where one PMT fired for each strip were allowed.
+    \item Dalitz Cut: An empircal distance sum was used to remove events that don't fall 
+    into this range determined by Equation \ref{eq:totaldist}.
+    \item Valid hit: Using generated events on a calculated skeleton of the pcal, each pixel 
+    was determined to be valid or not.
+    \item 3$\sigma$ Cut on Signal: Each signal was fit to a Gaussian in pass 2. The parameter 
+    $\sigma$ from the Gaussian fit was used to cut out the events that did not lie within this function.
+    \item Attenuation Corrected Intensity Cut: The ADC value measured was corrected with the 
+    attenuation curves obtained from pass 2. The corrected value was summed over each layer. 
+    A cut on this intensity was placed generously from 1300 to 2700
+\end{itemize}
+               
+               
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{pass5}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strips 
+    (5, 15, 30, 45, 67, and 68) and a projection of the w60 strip.}
+    \label{fig:pass5}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height= 2.75in, keepaspectratio = true]{atpass5}
+    \caption{Shown is the overall attenuation fits to the selected u-strips 
+    (5, 15, 30, 45, 67, and 68).}
+    \label{fig:atpass5}
+\end{figure}
+
+
+\FloatBarrier
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[h]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth, keepaspectratio = true]{nocutsIsum}
+        \caption{Sum of all initial intensities. No cuts.}
+        \label{fig:nocutsIsum}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[h]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth, keepaspectratio = true]{3sigcutIsum}
+        \caption{Sum of all initial intensities. Three sigma Cut.}
+        \label{fig:3sigcutIsum}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[h]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth, keepaspectratio = true]{allcutsIsum}
+        \caption{Sum of all initial intensities. Three sigma and sum Cut.}
+        \label{fig:allcutsIsum}
+    \end{subfigure}
+    \caption{Sum of initial intensities should be near $650 \times 3 = 1950$ (after gain corrections).}
+    \label{fig:intensities}
+\end{figure}
+
+\FloatBarrier
+\subsection{Comparison of Fits}
+Possibly the best evidence for needed cuts about each signal in an iterative process 
+is seen by looking at the raw signal fits for a w strip with the possible u projections. 
+These comparisons can be seen from pass 0 to pass 5 in Figures \ref{fig:w61sigfitpass0} and 
+\ref{fig:w61sigfitpass5}. The difference between these signal tends to be cleaned up to a 
+more Gaussian signal. By itself it is difficult to remove the backgound, but due to the correlating 
+cuts on the u and v layers a reasonable output is produced.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth, height= 8in, keepaspectratio = true]{w61sigfitpass0}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strip projections of the w61 strip (pass0).}
+    \label{fig:w61sigfitpass0}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth, height= 8in, keepaspectratio = true]{w61sigfitpass5}
+    \caption{Shown is the ADC signal corresponding to signals from multiple u-strip projections of the w61 strip (pass5).}
+    \label{fig:w61sigfitpass5}
+\end{figure}
+
+
+\FloatBarrier
+
+
+
+
+
+
 
 
 
@@ -49,19 +343,19 @@ $a$ in equation \ref{eq:exp}.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{0.4\textwidth}
+ %   \begin{subfigure}[h]{0.4\textwidth}
         \includegraphics[width= \textwidth, keepaspectratio = true]{exponetial67}
         \caption{Shown is a fit with equation \ref{eq:exp}, where the y axis is the ADC value and the x axis is $L_{s}$.}
         \label{fig:exponential67}
-    \end{subfigure}
+%    \end{subfigure}
     ~
-    \begin{subfigure}[h]{0.4\textwidth}
-        \includegraphics[width= \textwidth, keepaspectratio = true]{exponetialwfib67}
-        \caption{Shown is a fit with equation \ref{eq:exp}, where the y axis is the ADC value and the x axis is $L_{s} + L_{f}$.}
-        \label{fig:exponentialwfib67}
-    \end{subfigure}
-    \caption{Plotted is the fit of equation \ref{eq:exp}, where $L = L_{s}$ (a) and $L = L_{s} + L_{f}$ (b).}
-    \label{fig:expfit}
+%    \begin{subfigure}[h]{0.4\textwidth}
+%        \includegraphics[width= \textwidth, keepaspectratio = true]{exponetialwfib67}
+%        \caption{Shown is a fit with equation \ref{eq:exp}, where the y axis is the ADC value and the x axis is $L_{s} + L_{f}$.}
+%        \label{fig:exponentialwfib67}
+%    \end{subfigure}
+%    \caption{Plotted is the fit of equation \ref{eq:exp}, where $L = L_{s}$ (a) and $L = L_{s} + L_{f}$ (b).}
+%    \label{fig:expfit}
 \end{figure}
 
 As seen by figure \ref{fig:expfit}, a single exponential may not be the best fit for the data.
@@ -71,18 +365,18 @@ However this function again can reduce to equation \ref{eq:exp} because $L_{f}$ 
 scintillator strip and is seen not to be a good fit.
 
 
-\begin{equation}
-    \begin{split}
-        I &= a_{1}e^{b_{1}(L_{s} + L_{f})}e^{b_{2}L_{s}} \\
-          &= a_{1}e^{b_{1}(L_{s} + L_{f}) + b_{2}L_{s}} \\
-          &= a_{1}e^{(b_{1} + b_{2})L_{s} + b_{1}L_{f}} \\
-          &= a_{1}e^{b_{1}L_{f}}e^{(b_{1} + b_{2})L_{s}} \\
-          &= e^{a}e^{(b_{1} + b_{2})L_{s}} \\
-          &= e^{a}e^{bL_{s}} \\
-          &= e^{a + bL_{s}} \\
-    \end{split}
-    \label{eq:try1}
-\end{equation}
+%\begin{equation}
+%    \begin{split}
+%        I &= a_{1}e^{b_{1}(L_{s} + L_{f})}e^{b_{2}L_{s}} \\
+%          &= a_{1}e^{b_{1}(L_{s} + L_{f}) + b_{2}L_{s}} \\
+%          &= a_{1}e^{(b_{1} + b_{2})L_{s} + b_{1}L_{f}} \\
+%          &= a_{1}e^{b_{1}L_{f}}e^{(b_{1} + b_{2})L_{s}} \\
+%          &= e^{a}e^{(b_{1} + b_{2})L_{s}} \\
+%          &= e^{a}e^{bL_{s}} \\
+%          &= e^{a + bL_{s}} \\
+%    \end{split}
+%    \label{eq:try1}
+%\end{equation}
 
 \begin{comment}
 \begin{equation}
@@ -120,10 +414,8 @@ an exponential with an added constant as seen by Equation \ref{eq:expplusconst}.
 A table of constants can be uploaded to the clas12 database once the fitting procedure is complete.
 %To get the calibration constants below, parameter limits were set on equation \ref{eq:expplusconst} 
 %for $200.0 < a < 900.0$, $-0.009 < b < -0.0005$, and $0.0 < c < 700.0$, based on qualitative observation on a global fit.
-On strips where less than five points were available for fitting, either 
-a single exponential or a constant term was used for the fitting function. This was done to avoid situations 
-with more parameters than points available. In general the less points available for the fit, the shorter 
-the strip is, allowing for less of a need for a correction. All the fits shown are for Sector One of the PCAL.
+For strips where fewer than five points were available for fitting, either 
+a single exponential or a constant term was used for the fitting function. This was done to avoid overconstraining the fit. All the fits shown are for Sector One of the PCAL.
 \FloatBarrier
 \vspace{5mm}
 
@@ -131,8 +423,7 @@ the strip is, allowing for less of a need for a correction. All the fits shown a
 \begin{figure}[h]
     \centering
     \includegraphics[width= 6.5in, height = 8in, keepaspectratio = true]{allustrips}
-    \caption{Plotted are all of the u strip attenuation plots starting at 68 in the upper left hand corner. 
-    These plots are all plotted on a linear scale. The y-axis is set from 0 to 850 and the x-axis varies 
+    \caption{Attenuation fits for U strips with U68 in the upper left hand corner. Y-axis is linear ranging from 0 to 850. X-axis varies 
     depending on the number of points in the plot.}
     \label{fig:allustrips}
 \end{figure}
@@ -142,9 +433,8 @@ the strip is, allowing for less of a need for a correction. All the fits shown a
 \begin{figure}[h]
     \centering
     \includegraphics[width= 6.5in, height = 8in, keepaspectratio = true]{allvstrips}
-    \caption{Plotted are all of the v strip attenuation plots starting at 62 in the upper left hand 
-    corner. These plots are all plotted on a linear scale. The y-axis is set from 0 to 850 and the 
-    x-axis varies depending on the number of points in the plot.}
+    \caption{Attenuation fits for V strips V62 in the upper left hand corner. Y-axis is linear ranging from 0 to 850. X-axis varies 
+    depending on the number of points in the plot.}
     \label{fig:allvstrips}
 \end{figure}
 
@@ -155,9 +445,8 @@ the strip is, allowing for less of a need for a correction. All the fits shown a
 \begin{figure}[h]
     \centering
     \includegraphics[width= 6.5in, height = 8in, keepaspectratio = true]{allwstrips}
-    \caption{Plotted are all of the w strip attenuation plots starting at 62 in the upper left 
-    hand corner. These plots are all plotted on a linear scale. The y-axis is set from 0 to 850 
-    and the x-axis varies depending on the number of points in the plot.}
+    \caption{Attenuation fits for V strips V62 in the upper left hand corner. Y-axis is linear ranging from 0 to 850. X-axis varies 
+    depending on the number of points in the plot.}
     \label{fig:allustrips}
 \end{figure}
 

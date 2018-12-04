@@ -1,30 +1,6 @@
 \section{Fit to ADC Output}
 \label{Sec:fitToADCOutput}
-Although in general a 3-strip pixel can be odd shaped, a 2-strip pixel can be straightforward. 
-This two layer correlation creates trapezoidal bins formed by the overlap of two different strip 
-orientations\footnote{All of the studies in this section were primarily focused on the u strip attenuations, 
-rather than the v/w strips.}. An example of one of these trapezoids outlined in black can be seen in Fig.~\ref{fig:stripwidth}. 
-Each one of these trapezoids should have a ADC readout value. The width of this physical bin can be found by
 
-\begin{equation}
-    s = \frac{w}{\sin{\alpha}}
-    \label{eq:s}
-\end{equation}
-or
-\begin{equation}
-    s = \frac{w}{\cos{\beta}},
-\end{equation}
-where $w$ is a single scintillator strip width ($\approx 4.5$cm).
-Statistically one might expect some sort of peak describing the distribution of values. The centroid of this 
-distribution is used as a data point at that center of that physical bin.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width= 3in, keepaspectratio = true]{trapezoidUWintersection}%stripwidth
-\caption{Shown is an outline of a generic intersection of a u and w strip. The distance between the trapezoidal
- area and the PCAL edge can be represented by a linear function of $s$.}
-\label{fig:stripwidth}
-\end{figure}
 
 \FloatBarrier
 \subsection{Signal Shape}

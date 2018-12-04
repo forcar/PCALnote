@@ -1,40 +1,38 @@
-\contentsline {section}{\numberline {1}Design}{3}
-\contentsline {subsection}{\numberline {1.1}Overlapping Shapes}{5}
-\contentsline {section}{\numberline {2}Data and Simulation}{5}
-\contentsline {section}{\numberline {3}Various Cuts}{6}
-\contentsline {subsection}{\numberline {3.1}Multiplicity Cut}{6}
-\contentsline {subsection}{\numberline {3.2}Dalitz Cut}{6}
-\contentsline {subsection}{\numberline {3.3}Unphysical Events}{7}
-\contentsline {section}{\numberline {4}Fit to ADC Output}{8}
-\contentsline {subsection}{\numberline {4.1}Signal Shape}{9}
-\contentsline {subsubsection}{\numberline {4.1.1}Fit function}{10}
-\contentsline {subsection}{\numberline {4.2}Iteration Process}{11}
-\contentsline {subsubsection}{\numberline {4.2.1}Pass 0}{12}
-\contentsline {subsubsection}{\numberline {4.2.2}Pass 1}{13}
-\contentsline {subsubsection}{\numberline {4.2.3}Pass 2}{14}
-\contentsline {subsubsection}{\numberline {4.2.4}Pass 3}{15}
-\contentsline {subsubsection}{\numberline {4.2.5}Pass 4}{16}
-\contentsline {subsubsection}{\numberline {4.2.6}Pass 5}{17}
-\contentsline {subsection}{\numberline {4.3}Comparison of Fits}{18}
-\contentsline {section}{\numberline {5}Light Attenuation}{21}
-\contentsline {subsection}{\numberline {5.1}Strip Number vs Distance}{21}
-\contentsline {subsection}{\numberline {5.2}Fit Function}{21}
-\contentsline {subsection}{\numberline {5.3}Calibration Constants}{22}
-\contentsline {section}{\numberline {6}Calibration Studies}{30}
-\contentsline {subsection}{\numberline {6.1}Optimal ADC Bin Size}{30}
-\contentsline {subsection}{\numberline {6.2}Minimum Statistics}{30}
-\contentsline {section}{\numberline {7}Simulation}{32}
-\contentsline {subsection}{\numberline {7.1}GEMC: Event Generation}{32}
-\contentsline {subsection}{\numberline {7.2}Input: Generation coefficient}{32}
-\contentsline {subsection}{\numberline {7.3}Cuts Applied}{32}
-\contentsline {subsubsection}{\numberline {7.3.1}Multiplicity Cut}{33}
-\contentsline {subsubsection}{\numberline {7.3.2}Valid Pixel Cut}{33}
-\contentsline {subsection}{\numberline {7.4}ADC signals and fits}{33}
-\contentsline {subsection}{\numberline {7.5}Exponential fits}{39}
-\contentsline {subsection}{\numberline {7.6}Attenuation Coeffiecients}{41}
-\contentsline {section}{\numberline {8}Reproducibility}{45}
-\contentsline {subsection}{\numberline {8.1}Without Iteration}{45}
-\contentsline {subsection}{\numberline {8.2}With Iteration}{47}
-\contentsline {section}{\numberline {9}Systematic Studies}{50}
-\contentsline {subsection}{\numberline {9.1}Fitting function}{50}
-\contentsline {section}{\numberline {10}Attenuation Tables}{51}
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {2}Design}{3}
+\contentsline {section}{\numberline {3}Cosmic Ray Tests}{5}
+\contentsline {section}{\numberline {4}Overlapping Shapes}{6}
+\contentsline {section}{\numberline {5}Event Selection}{6}
+\contentsline {subsection}{\numberline {5.1}Multiplicity Cut}{6}
+\contentsline {subsection}{\numberline {5.2}Dalitz Cut}{7}
+\contentsline {section}{\numberline {6}Light Attenuation}{8}
+\contentsline {subsection}{\numberline {6.1}Fitting to MIP Peaks}{9}
+\contentsline {subsection}{\numberline {6.2}Fitting Strategy}{9}
+\contentsline {subsection}{\numberline {6.3}Iteration Process}{10}
+\contentsline {subsubsection}{\numberline {6.3.1}Pass 0}{11}
+\contentsline {subsubsection}{\numberline {6.3.2}Pass 1}{12}
+\contentsline {subsubsection}{\numberline {6.3.3}Pass 2}{13}
+\contentsline {subsubsection}{\numberline {6.3.4}Pass 3}{14}
+\contentsline {subsubsection}{\numberline {6.3.5}Pass 4}{15}
+\contentsline {subsubsection}{\numberline {6.3.6}Pass 5}{16}
+\contentsline {subsection}{\numberline {6.4}Comparison of Fits}{17}
+\contentsline {subsection}{\numberline {6.5}Fit Function}{20}
+\contentsline {subsection}{\numberline {6.6}Calibration Constants}{21}
+\contentsline {section}{\numberline {7}Calibration Studies}{29}
+\contentsline {subsection}{\numberline {7.1}Optimal ADC Bin Size}{29}
+\contentsline {subsection}{\numberline {7.2}Minimum Statistics}{29}
+\contentsline {section}{\numberline {8}Simulation}{31}
+\contentsline {subsection}{\numberline {8.1}GEMC: Event Generation}{31}
+\contentsline {subsection}{\numberline {8.2}Input: Generation coefficient}{31}
+\contentsline {subsection}{\numberline {8.3}Cuts Applied}{31}
+\contentsline {subsubsection}{\numberline {8.3.1}Multiplicity Cut}{32}
+\contentsline {subsubsection}{\numberline {8.3.2}Valid Pixel Cut}{32}
+\contentsline {subsection}{\numberline {8.4}ADC signals and fits}{32}
+\contentsline {subsection}{\numberline {8.5}Exponential fits}{38}
+\contentsline {subsection}{\numberline {8.6}Attenuation Coeffiecients}{40}
+\contentsline {section}{\numberline {9}Reproducibility}{44}
+\contentsline {subsection}{\numberline {9.1}Without Iteration}{44}
+\contentsline {subsection}{\numberline {9.2}With Iteration}{46}
+\contentsline {section}{\numberline {10}Systematic Studies}{49}
+\contentsline {subsection}{\numberline {10.1}Fitting function}{49}
+\contentsline {section}{\numberline {11}Attenuation Tables}{50}

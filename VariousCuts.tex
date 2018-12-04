@@ -1,33 +1,16 @@
-\section{Various Cuts}
-The data used for calibration is from cosmic ray muons. These cosmic rays hit randomly throughout the PCAL unit. 
-The distribution of these events although expected to be uniform, don't guarantee a good hit or detected signal in all three layers.
-Moreover due to the strange pixel shapes and varying sizes different pixels have very different number of counts. 
-An intitial skim was used to cut out events that would prevent a clean signal for calibration purposes.
-Events were removed based on a multiplicity cut and a Dalitz condition.
+\section{Event Selection}
 
-
+Triggers selected for calibration are restricted to events where only a single pixel is hit by the cosmic muon.  This ensures the muon trajectory is nearly perpendicular and does not undergo multiple scattering.  As a result a uniform distribution of desposited MIP energy is seen by all the PMTs, which provides a more accurate calibration. An intitial skim was used to select events that are most likely to involve a single pixel hit, using a multiplicity cut and a geometrical constraint.
 
 \FloatBarrier
 \subsection{Multiplicity Cut}
-To ensure a more accurate calibration, a multiplicity cut was applied to the collected data. 
-The multiplicity cut removed any event that contained more than three PMT readouts (one in each layer). 
-This reduces the number of cosmic ray events that are not relatively perpendicular to the face of the PCAL unit.
-This is due to the fact that if a cosmic ray trajectory is not perpendicular to the PCAL face, it could clip multiple strips 
-in one orientation (i.e. strip U30 and U31 both recieve a signal). Therefore, by restricting the calibration to one perpendicular
-hit, more well defined calibration constants could be determined. The accepted range of angles (different from perpendicular
-to the PCAL face) varies as a function of strip number and is not uniform in all directions. This multiplicity cut also 
-helps in removing events where multiple cosmic rays hit the detector within the same time interval, due to possible firing of more PMTs. 
+The multiplicity cut removed any event that contained more than three PMT readouts (one from each layer). This reduces the number of cosmic ray events that are not perpendicular to the face of the PCAL unit.  If a cosmic ray trajectory is not perpendicular to the PCAL face, it can intercept multiple strips in one orientation (e.g. - strip U30 and U31 both receive a signal). Although the accepted range of non-perpendicular angles depends on the size of the strips and their overlapping shape, this effect is expect to average out.  This multiplicity cut also helps to remove events where multiple cosmic rays hit the detector within the same time interval.  Overall this cut removes 95\% of the triggered events. 
 
-
-
- \FloatBarrier
+\FloatBarrier
 \subsection{Dalitz Cut} 
-The Dalitz condition implies that if a point inside a triangle is chosen, no matter the location, the sum of the distances to each edge will be unchanged.
-Rather than calculating each x and y point for every hit, distance as a function of strip width can be used to test this condition.
-The relatively simple strip calculation can be computed by knowing the corresponding strip number to the triggered PMT combined with equations \ref{eq:udist}-\ref{eq:totaldist}.
-This distance is empirically found to be two.
-Preskimmed data demonstrating this distribution can be found at \url{https://clasweb.jlab.org/wiki/index.php/PCAL_Cosmic_Ray_Tests}. 
-If this condition is not satisfied, then the hit recorded is most likely electronic noise, an indirect hit, or multiple cosmic ray hits recorded at once.
+The Dalitz cut relies on the geometry axiom that for any point inside an equilateral triangle, the sum of the distances to each edge of the triangle is constant.  The same result also applies to distances along the edge of the triangle, in which case the constant is equal to two.  Thus only PMT numbers are needed to test the Dalitz cut, rather than calculating the interior x and y coordinate for every hit.  Once the N=3 multiplicity cut is passed, only the Dalitz condition need be tested for the U,V,W combination of hit strips to ensure the combination arises from a single pixel. If this condition is not satisfied, then the hit recorded is most likely electronic noise, an indirect hit, or multiple cosmic ray hits recorded at once.
+
+The relatively simple calculation is given by equations \ref{eq:udist}-\ref{eq:totaldist}.  The calculation uses normalized coordinates calculated from the number of the triggered PMTs, which compensates for the PCAL not being an equilateral triangle.  Examination of Figure \ref{fig:dalitz}~(left) shows that the N=3 multiplicity skim overwhelmingly favors events that produce a pixel, as indicated by the sharp peak at uvw=2 which contains most of the events.  An example of the kind of hit pattern that would cause events outside of the uvw=2 peak is shown in Figure \ref{fig:dalitz}~(right).
 
 \begin{equation}
     dist(u) = \left\{
@@ -65,55 +48,15 @@ If this condition is not satisfied, then the hit recorded is most likely electro
 
 \begin{figure}[h]
     \centering
-    \includegraphics[height= 3in, keepaspectratio = true]{dalitz}
-    \caption{Plotted is the resulting number ($uvw$) obtained from equation \ref{eq:totaldist} after the initial skim.}
-    \label{fig:dalitz}
+    \begin{subfigure}[h]{0.44\textwidth}
+        \includegraphics[height= 3in, keepaspectratio = true]{dalitz2}
+        \label{fig:dalitz1}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.55\textwidth}
+        \includegraphics[height=3in, keepaspectratio = true]{unphysical}
+        \label{fig:dalitz2}
+    \end{subfigure}
+\caption{LEFT: Histogram of Dalitz condition (\ref{eq:totaldist}) after multiplicity (N=3) skim of cosmic triggered data.\\ RIGHT: Example of an event that passed the N=3 cut, but fell outside of the Dalitz peak at uvw=2.}
+\label{fig:dalitz}
 \end{figure} 
-
-
-\FloatBarrier
-\subsection{Unphysical Events}
-\label{sec:unphysical}
-An investigation into the types background was performed. 
-Looking at an occupation number (events within a pixel), some recorded hits were unphysical if only one cosmic ray was considered to prompt the signal. 
-Examples can be seen by Figures \ref{fig:unphysical} and \ref{fig:occupationnum}.
-
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[h]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth, keepaspectratio = true]{unphysical}
-        \caption{Shown is one example of an event that would pass a multiplicity cut, but is clearly from either multiple rays or other noise.}
-        \label{fig:unphysical}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[h]{0.44\textwidth}
-        \centering
-        \includegraphics[width=\textwidth, keepaspectratio = true]{pixelmap}
-        \caption{Shown is a rough outline of the scintillator mapping created with minimal input.}
-        \label{fig:pixelmap}
-    \end{subfigure}
-    \caption{Rough outline of the PCAL system.}
-    \label{fig:pixelexplain}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width= 6in, keepaspectratio = true]{occupationnum}
-\caption{The left histogram shows the U and V strip correlation after both the multiplicity and dalitz cuts were applied. The right 
-histogram shows the U and V strip correlation after rejecting all known unphysical background.}
-\label{fig:occupationnum}
-\end{figure}
-
-
-Some of the unphysical events can be spotted easily because low u and low v strip numbers should never correlate to just one incident cosmic ray.
-To investigate in more detail, a program outlining the PCAL detector by strip number was generated.
-This was generated using $\alpha$, $\beta$, number of strips, and strip width ($w$) as defined by Figure \ref{fig:stripwidth}. This outline or pixel mapping can be seen in Figure \ref{fig:pixelmap}.
-This ideal outline of the system was then used in combination with a random number generator to verify which strip numbers could correlate to a physical perpendicular trajectory through the system.
-These correlation numbers were then stored in tables and recalled in the analysis. Neighboring pixels in all directions were also marked as valid to account for uncertainty in the calculations and given numbers. 
-Removing any event that did not end up in correlated PMTs results in no obvious unphysical signals as seen in figure \ref{fig:occupationnum}. 
-However, looking at the signal distribution an exponential background still appears. This demonstrates that either different cuts and/or a very good fitting routine needs to be put in place.
-
-
-
 \FloatBarrier
